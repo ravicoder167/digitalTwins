@@ -4,23 +4,20 @@ A modern, responsive website for DigitalTwins, showcasing IT consultancy and dig
 
 ## Features
 
-- Responsive design that works on all devices
-- Modern UI with smooth animations
-- Interactive sections:
-  - Hero section with call-to-action
-  - About Us with company highlights
-  - Services showcase with hover effects
+- Django-based web application
+- Clean, organized project structure
+- Key sections:
+  - Home page with company overview
+  - About Us section
+  - Services showcase
   - Industries We Serve section
-  - Contact form with validation
-  - Footer with social links
+  - Contact form with server-side validation
+  - Dynamic template-based pages
 
 ## Technologies Used
 
-- HTML5
-- CSS3 (with modern features like Grid and Flexbox)
-- JavaScript (ES6+)
 - Django (Python web framework)
-- Font Awesome for icons
+- HTML5 (in Django templates)
 
 ## Project Structure
 
@@ -28,12 +25,10 @@ A modern, responsive website for DigitalTwins, showcasing IT consultancy and dig
 DigitalTwins/
 ├── core/                   # Django app core functionality
 ├── digital_twins/          # Django project settings
-├── static/                 # Static files (CSS, JS)
-│   ├── css/
-│   └── js/
-├── templates/             # HTML templates
+├── static/                 # Static files (if any)
+├── templates/              # HTML templates
 │   └── core/
-└── manage.py             # Django management script
+└── manage.py               # Django management script
 ```
 
 ## Setup Instructions
@@ -67,25 +62,30 @@ DigitalTwins/
 
 6. Visit `http://localhost:8000` in your browser
 
-## Features Overview
+## Django App Structure
 
-### Home Page
-- Hero section with animated text and call-to-action button
-- About Us section highlighting company values and expertise
-- Services grid showcasing IT solutions
-- Industries section with detailed service offerings
+### Views
+- Home view: Renders the main landing page
+- About view: Displays company information
+- Services view: Lists IT solutions offered
+- Industries view: Shows industries served
+- Contact view: Handles contact form submission
 
-### Interactive Elements
-- Smooth scroll navigation
-- Hover effects on cards and buttons
-- Form validation
-- Responsive navigation menu
+### Models
+- Service: Stores information about IT services
+- Industry: Represents industries the company serves
+- ContactSubmission: Stores submitted contact form data
 
-### Responsive Design
-- Mobile-first approach
-- Flexible grid layouts
-- Optimized for all screen sizes
-- Touch-friendly interface
+### Templates
+- Base template with common structure
+- Page-specific templates extending the base
+- Reusable components for consistent design
+
+### Forms
+- ContactForm: Handles user inquiries with validation
+
+### URL Configuration
+- Mapped views to URL patterns for easy navigation
 
 ## Contributing
 
