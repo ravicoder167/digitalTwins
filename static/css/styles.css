@@ -63,7 +63,9 @@ nav ul li a:hover {
 /* Hero Section */
 .hero {
     height: 100vh;
-    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    background: linear-gradient(135deg, rgba(0, 31, 63, 0.8), rgba(0, 102, 204, 0.8)), url('../images/digitaltwin.png');
+    background-size: cover;
+    background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
