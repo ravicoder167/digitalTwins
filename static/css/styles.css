@@ -29,24 +29,50 @@ header {
     z-index: 1000;
 }
 
-nav {
+.header-container {
+    max-width: auto;
+    margin-left: 4rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 1rem 5%;
-    max-width: 1200px;
-    margin: 0 auto;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+}
+
+/* Logo Section */
+.logo-section {
+    display: flex;
+    align-items: center;
 }
 
 .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+/* Navigation Section */
+.nav-section {
+    flex-grow: 1;
+}
+
+nav {
+    display: flex;
+    justify-content: flex-end;
 }
 
 nav ul {
     display: flex;
     list-style: none;
+    gap: 2rem;
+}
+
+nav ul li {
+    white-space: nowrap;
 }
 
 nav ul li a {
@@ -54,10 +80,94 @@ nav ul li a {
     color: var(--text-color);
     padding: 0.5rem 1rem;
     transition: color 0.3s ease;
+    display: block;
 }
 
 nav ul li a:hover {
     color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .logo-section {
+        margin-bottom: 1rem;
+    }
+
+    nav {
+        justify-content: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+
+    nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+
+    nav ul li a {
+        padding: 1rem;
+        border-top: 1px solid var(--light-gray);
+    }
+
+    nav ul li:last-child a {
+        border-bottom: 1px solid var(--light-gray);
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    header {
+        position: relative;
+    }
+    
+    .logo-section {
+        justify-content: center;
+        padding: 1rem;
+    }
+    
+    .logo img {
+        width: 45px;
+        height: 45px;
+    }
+    
+    nav {
+        padding: 0;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    nav ul li {
+        width: 100%;
+    }
+    
+    nav ul li a {
+        padding: 1rem;
+        text-align: center;
+        border-top: 1px solid var(--light-gray);
+    }
+    
+    nav ul li:last-child a {
+        border-bottom: 1px solid var(--light-gray);
+    }
+}
+
+/* Large desktop styles */
+@media (min-width: 1400px) {
+    .logo img {
+        width: 80px;
+        height: 80px;
+    }
 }
 
 /* Hero Section */
@@ -71,6 +181,13 @@ nav ul li a:hover {
     justify-content: center;
     text-align: center;
     padding: 0 1rem;
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding-top: 2rem;
+    }
 }
 
 .hero-content {
