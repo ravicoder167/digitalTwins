@@ -1,4 +1,29 @@
-Django>=5.1.7
-python-dotenv==1.0.0
-whitenoise==6.6.0  # for serving static files
-gunicorn==21.2.0   # for production server
+Django==5.1.7  # Pin specific version for stability
+gunicorn==21.2.0       # Production server
+python-dotenv==1.0.0   # Environment variables management
+django-environ==0.11.2 # Enhanced environment variable handling
+
+# Static Files
+whitenoise==6.6.0      # Static files serving
+django-storages==1.14.2     # Cloud storage backends
+google-cloud-storage==2.14.0  # GCS storage backend
+
+# Security
+django-cors-headers==4.3.1  # Handle CORS
+django-secure==1.0.2        # Additional security headers
+
+# Database
+psycopg2-binary==2.9.9      # PostgreSQL adapter (recommended for production)
+dj-database-url==2.1.0      # Database URL configuration
+
+# Caching & Performance
+django-redis==5.4.0         # Redis cache backend
+redis==5.0.1               # Redis client
+
+# Monitoring & Logging
+django-health-check==3.17.0  # Health check endpoints
+sentry-sdk==1.39.1         # Error tracking
+django-prometheus==2.3.1    # Metrics for monitoring
+
+# Utils
+requests==2.31.0           # HTTP library for external API calls
