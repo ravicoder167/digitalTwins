@@ -45,6 +45,14 @@ steps:
       - "10"
       - "--port"
       - "8080"
+      - "--timeout"
+      - "300"
+      - "--execution-environment"
+      - "gen2"
+      - "--health-checks"
+      - "enabled"
+      - "--health-check-timeout"
+      - "300s"
 
 # Substitutions
 substitutions:
