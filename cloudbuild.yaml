@@ -28,13 +28,7 @@ steps:
       - "us-central1"
       - "--allow-unauthenticated"
       - "--set-env-vars"
-      - "SECRET_KEY=${_SECRET_KEY}"
-      - "--set-env-vars"
-      - "DATABASE_URL=${_DATABASE_URL}"
-      - "--set-env-vars"
-      - "DEBUG=0"
-      - "--set-env-vars"
-      - "ALLOWED_HOSTS=${_SERVICE_NAME}.run.app"
+      - "^##^SECRET_KEY=${_SECRET_KEY},DATABASE_URL=${_DATABASE_URL},DEBUG=0,ALLOWED_HOSTS=${_SERVICE_NAME}.run.app"
       - "--memory"
       - "512Mi"
       - "--cpu"
@@ -56,7 +50,7 @@ steps:
 
 # Substitutions
 substitutions:
-  _SERVICE_NAME: cognitosparks  # Default service name, can be overridden in trigger
+  _SERVICE_NAME: cognitosparks  # Default service name
   _SECRET_KEY: ""              # Set this in Cloud Build trigger
   _DATABASE_URL: ""            # Set this in Cloud Build trigger
 
@@ -81,5 +75,5 @@ options:
 
 # Tags for the build
 tags:
-  - digital-twins
+  - cognitosparks
   - production
