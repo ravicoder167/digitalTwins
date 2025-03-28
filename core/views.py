@@ -3,7 +3,14 @@ from django.http import JsonResponse
 from django.db import connections
 from django.db.utils import OperationalError
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 def home(request):
+    if request.method == 'POST':
+        # For now, just redirect back to the home page
+        # You can add form processing logic here later
+        return redirect('core:home')
     return render(request, 'core/home.html')
 
 def health_check(request):
