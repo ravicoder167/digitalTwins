@@ -18,7 +18,8 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 ALLOWED_HOSTS.extend([
     f"{os.getenv('_SERVICE_NAME', 'cognitosparks')}.run.app",
-    "cognitosparks-473956275801.us-central1.run.app"
+    "cognitosparks-473956275801.us-central1.run.app",
+    "cognitosparks.com"      # Add main domain
 ])
 
 # Application definition
@@ -115,7 +116,8 @@ X_FRAME_OPTIONS = 'DENY'
 
 # HTTPS settings
 if not DEBUG and not os.getenv('DOCKER_LOCAL', False):
-    SECURE_SSL_REDIRECT = True
+    # Don't force SSL redirect as CloudFlare handles this
+    SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 31536000  # 1 year
