@@ -1,10 +1,12 @@
 #!/bin/bash
 set -e  # Exit on error
 
-# Add user-specific Python scripts to PATH
-export PATH="$PATH:$HOME/AppData/Roaming/Python/Python310/Scripts"
-
 echo "Starting application setup..."
+echo "Current working directory: $(pwd)"
+echo "Python version: $(python --version)"
+echo "Checking environment variables..."
+echo "PORT: ${PORT}"
+echo "STATIC_ROOT: ${STATIC_ROOT}"
 
 # Ensure PORT is set
 if [ -z "$PORT" ]; then
@@ -40,17 +42,14 @@ if [ ! -d "$STATIC_ROOT" ]; then
     python manage.py collectstatic --noinput
 fi
 
-# Start Gunicorn
+# Start Gunicorn with simplified configuration
 echo "Starting Gunicorn on 0.0.0.0:${PORT}..."
 exec gunicorn digital_twins.wsgi:application \
-    --name digital_twins \
     --bind 0.0.0.0:${PORT} \
     --workers 2 \
     --threads 2 \
-    --timeout 0 \
+    --timeout 30 \
     --access-logfile - \
     --error-logfile - \
-    --log-level debug \
-    --capture-output \
-    --enable-stdio-inheritance \
-    --preload
+    --log-level info \
+    --capture-output
