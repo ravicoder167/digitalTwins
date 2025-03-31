@@ -191,9 +191,15 @@
                 {% endif %}
                 <form class="contact-form" method="post">
                     {% csrf_token %}
-                    <input type="text" name="name" placeholder="Your Name" required>
-                    <input type="email" name="email" placeholder="Your Email" required>
-                    <textarea name="message" placeholder="Your Message" required></textarea>
+                    {{ form.name.errors }}
+                    <input type="text" name="name" placeholder="Your Name" required id="{{ form.name.id_for_label }}">
+                    
+                    {{ form.email.errors }}
+                    <input type="email" name="email" placeholder="Your Email" required id="{{ form.email.id_for_label }}">
+                    
+                    {{ form.message.errors }}
+                    <textarea name="message" placeholder="Your Message" required id="{{ form.message.id_for_label }}"></textarea>
+                    
                     <button type="submit" class="submit-btn">Send Message</button>
                 </form>
             </div>

@@ -15,18 +15,18 @@ def home(request):
             email = form.cleaned_data['email']
             message = form.cleaned_data['message']
             
-            # Send email
-            subject = f"New contact form submission from {name}"
-            email_message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
-            send_mail(subject, email_message, settings.DEFAULT_FROM_EMAIL, [settings.CONTACT_EMAIL])
-            
-            messages.success(request, "Your message has been sent successfully!")
-            return redirect('core:home')
-        else:
-            messages.error(request, "There was an error with your submission. Please try again.")
-    else:
-        form = ContactForm()
+            try:
+                # Send email
+                subject = f"New contact form submission from {name}"
+                email_message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
+                send_mail(subject, email_message, settings.DEFAULT_FROM_EMAIL, [settings.CONTACT_EMAIL])
+                
+                messages.success(request, "Your message has been sent successfully!")
+            except Exception as e:
+                messages.error(request, "Failed to send email. Please try again later.")
+            return redirect('core:home')  # Add back the namespace
     
+    form = ContactForm()  # Move form creation outside if/else
     return render(request, 'core/home.html', {'form': form})
 
 def health_check(request):
