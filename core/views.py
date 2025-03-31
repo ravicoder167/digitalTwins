@@ -1,17 +1,33 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.db import connections
 from django.db.utils import OperationalError
-
-from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
+from .forms import ContactForm
 
 def home(request):
     if request.method == 'POST':
-        # For now, just redirect back to the home page
-        # You can add form processing logic here later
-        return redirect('core:home')
-    return render(request, 'core/home.html')
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            
+            # Send email
+            subject = f"New contact form submission from {name}"
+            email_message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
+            send_mail(subject, email_message, settings.DEFAULT_FROM_EMAIL, [settings.CONTACT_EMAIL])
+            
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect('core:home')
+        else:
+            messages.error(request, "There was an error with your submission. Please try again.")
+    else:
+        form = ContactForm()
+    
+    return render(request, 'core/home.html', {'form': form})
 
 def health_check(request):
     """

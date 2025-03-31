@@ -28,7 +28,7 @@ steps:
       - "us-central1"
       - "--allow-unauthenticated"
       - "--set-env-vars"
-      - "^##^SECRET_KEY=${_SECRET_KEY},DATABASE_URL=${_DATABASE_URL},DEBUG=0,ALLOWED_HOSTS=${_SERVICE_NAME}.run.app"
+      - "^##^SECRET_KEY=${_SECRET_KEY},DATABASE_URL=${_DATABASE_URL},DEBUG=0,ALLOWED_HOSTS=${_SERVICE_NAME}.run.app,EMAIL_HOST_USER=${_EMAIL_HOST_USER},EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD}"
       - "--memory"
       - "512Mi"
       - "--cpu"
@@ -68,6 +68,10 @@ availableSecrets:
       env: '_SECRET_KEY'
     - versionName: projects/$PROJECT_ID/secrets/database_url/versions/latest
       env: '_DATABASE_URL'
+    - versionName: projects/$PROJECT_ID/secrets/email_host_user/versions/latest
+      env: '_EMAIL_HOST_USER'
+    - versionName: projects/$PROJECT_ID/secrets/email_host_password/versions/latest
+      env: '_EMAIL_HOST_PASSWORD'
 
 # Only trigger builds on main branch
 options:

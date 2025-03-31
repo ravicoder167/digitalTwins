@@ -180,6 +180,15 @@
                         <i class="far fa-calendar-alt"></i> Schedule an Appointment
                     </a>
                 </div>
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
                 <form class="contact-form" method="post">
                     {% csrf_token %}
                     <input type="text" name="name" placeholder="Your Name" required>

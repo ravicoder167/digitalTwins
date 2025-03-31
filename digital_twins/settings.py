@@ -144,3 +144,22 @@ if not DEBUG and not os.getenv('DOCKER_LOCAL', False):
     SECURE_HSTS_PRELOAD = False
     # Keep this to ensure proper protocol detection behind CloudFlare
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+# Using GitHub secrets for email credentials
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')  # Set in GitHub secrets
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')  # Set in GitHub secrets
+DEFAULT_FROM_EMAIL = 'info@cognitosparks.com'
+CONTACT_EMAIL = 'info@cognitosparks.com'
+
+# For local development, you can set these in your .env file
+if DEBUG:
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except ImportError:
+        pass
