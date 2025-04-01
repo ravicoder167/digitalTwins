@@ -21,7 +21,11 @@ jobs:
       - name: Submit Cloud Build
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          EMAIL_USER: ${{ secrets.EMAIL_HOST_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_HOST_PASSWORD }}
         run: |
           gcloud builds submit \
             --config=cloudbuild.yaml \
-            --substitutions=_SERVICE_NAME=cognitosparks,_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }},_DATABASE_URL=${{ secrets.DATABASE_URL }},_EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }},_EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}
+            --substitutions="_SERVICE_NAME=cognitosparks,_SECRET_KEY=${SECRET_KEY},_DATABASE_URL=${DATABASE_URL},_EMAIL_HOST_USER=${EMAIL_USER},_EMAIL_HOST_PASSWORD=${EMAIL_PASS}"
