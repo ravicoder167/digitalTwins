@@ -6,11 +6,17 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm
+import logging
+
+logger = logging.getLogger(__name__)
 
 def home(request):
+    logger.info("Home view accessed")
     if request.method == 'POST':
+        logger.info("POST request received")
         form = ContactForm(request.POST)
         if form.is_valid():
+            logger.info("Form is valid")
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             message = form.cleaned_data['message']
@@ -21,13 +27,27 @@ def home(request):
                 email_message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
                 send_mail(subject, email_message, settings.DEFAULT_FROM_EMAIL, [settings.CONTACT_EMAIL])
                 
+                logger.info("Email sent successfully")
                 messages.success(request, "Your message has been sent successfully!")
             except Exception as e:
+                logger.error(f"Failed to send email: {str(e)}")
                 messages.error(request, "Failed to send email. Please try again later.")
-            return redirect('core:home')  # Add back the namespace
+            
+            logger.info("Redirecting after form submission")
+            return redirect('core:home')
+        else:
+            logger.warning(f"Form is invalid. Errors: {form.errors}")
+    else:
+        logger.info("GET request received")
+        form = ContactForm()
     
-    form = ContactForm()  # Move form creation outside if/else
-    return render(request, 'core/home.html', {'form': form})
+    logger.info("Rendering home template")
+    context = {
+        'form': form,
+        'debug': settings.DEBUG
+    }
+    logger.debug(f"Template context: {context}")
+    return render(request, 'core/home.html', context)
 
 def health_check(request):
     """

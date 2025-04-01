@@ -191,17 +191,30 @@
                 {% endif %}
                 <form class="contact-form" method="post">
                     {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="form-errors">
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
                     {{ form.name.errors }}
-                    <input type="text" name="name" placeholder="Your Name" required id="{{ form.name.id_for_label }}">
+                    <input type="text" name="{{ form.name.name }}" placeholder="Your Name" required id="{{ form.name.id_for_label }}" value="{{ form.name.value|default:'' }}">
                     
                     {{ form.email.errors }}
-                    <input type="email" name="email" placeholder="Your Email" required id="{{ form.email.id_for_label }}">
+                    <input type="email" name="{{ form.email.name }}" placeholder="Your Email" required id="{{ form.email.id_for_label }}" value="{{ form.email.value|default:'' }}">
                     
                     {{ form.message.errors }}
-                    <textarea name="message" placeholder="Your Message" required id="{{ form.message.id_for_label }}"></textarea>
+                    <textarea name="{{ form.message.name }}" placeholder="Your Message" required id="{{ form.message.id_for_label }}">{{ form.message.value|default:'' }}</textarea>
                     
                     <button type="submit" class="submit-btn">Send Message</button>
                 </form>
+                {% if debug %}
+                <div class="debug-info">
+                    <h3>Debug Information:</h3>
+                    <p>Form instance: {{ form }}</p>
+                    <p>Form errors: {{ form.errors }}</p>
+                    <p>Form data: {{ form.data }}</p>
+                </div>
+                {% endif %}
             </div>
         </section>
     </main>
