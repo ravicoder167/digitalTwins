@@ -196,14 +196,26 @@
                             {{ form.errors }}
                         </div>
                     {% endif %}
-                    {{ form.name.errors }}
-                    <input type="text" name="{{ form.name.name }}" placeholder="Your Name" required id="{{ form.name.id_for_label }}" value="{{ form.name.value|default:'' }}">
+                    <div class="form-field">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        {% if form.name.errors %}
+                            <div class="field-errors">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
                     
-                    {{ form.email.errors }}
-                    <input type="email" name="{{ form.email.name }}" placeholder="Your Email" required id="{{ form.email.id_for_label }}" value="{{ form.email.value|default:'' }}">
+                    <div class="form-field">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        {% if form.email.errors %}
+                            <div class="field-errors">{{ form.email.errors }}</div>
+                        {% endif %}
+                    </div>
                     
-                    {{ form.message.errors }}
-                    <textarea name="{{ form.message.name }}" placeholder="Your Message" required id="{{ form.message.id_for_label }}">{{ form.message.value|default:'' }}</textarea>
+                    <div class="form-field">
+                        <textarea name="message" placeholder="Your Message" required></textarea>
+                        {% if form.message.errors %}
+                            <div class="field-errors">{{ form.message.errors }}</div>
+                        {% endif %}
+                    </div>
                     
                     <button type="submit" class="submit-btn">Send Message</button>
                 </form>

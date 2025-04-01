@@ -15,6 +15,7 @@ def home(request):
     if request.method == 'POST':
         logger.info("POST request received")
         form = ContactForm(request.POST)
+        logger.debug(f"POST data: {request.POST}")
         if form.is_valid():
             logger.info("Form is valid")
             name = form.cleaned_data['name']
@@ -37,6 +38,9 @@ def home(request):
             return redirect('core:home')
         else:
             logger.warning(f"Form is invalid. Errors: {form.errors}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
     else:
         logger.info("GET request received")
         form = ContactForm()

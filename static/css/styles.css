@@ -603,13 +603,33 @@ footer {
     gap: 1.5rem;
 }
 
-.contact-form input,
-.contact-form textarea {
+.form-field {
+    margin-bottom: 1.5rem;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
     padding: 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
     transition: border-color 0.3s ease;
+}
+
+.field-errors {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.form-errors {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
 }
 
 .contact-form input:focus,
