@@ -7,8 +7,9 @@ ENV PYTHONUNBUFFERED=1 \
     PORT=8080 \
     STATIC_ROOT=/app/staticfiles \
     STATIC_URL=/static/ \
-    DEBUG=0 \
-    PYTHONPATH=/app
+    DEBUG=1 \
+    PYTHONPATH=/app \
+    STARTUP_TIME=0
 
 # Set working directory
 WORKDIR /app
@@ -51,7 +52,7 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8080
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=30s --start-period=30s --retries=3 \
   CMD curl -f http://localhost:${PORT}/health/ || exit 1
 
 # Use the startup script as entrypoint

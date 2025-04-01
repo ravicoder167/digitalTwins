@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e  # Exit on error
 
+# Set startup time
+export STARTUP_TIME=$(date +%s)
+echo "Setting STARTUP_TIME to: ${STARTUP_TIME}"
+
 echo "Starting application setup..."
 echo "Current working directory: $(pwd)"
 echo "Python version: $(python --version)"
@@ -51,5 +55,6 @@ exec gunicorn digital_twins.wsgi:application \
     --timeout 30 \
     --access-logfile - \
     --error-logfile - \
-    --log-level info \
-    --capture-output
+    --log-level debug \
+    --capture-output \
+    --preload
