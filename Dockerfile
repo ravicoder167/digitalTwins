@@ -20,6 +20,7 @@ RUN apt-get update \
         libpq-dev \
         netcat-traditional \
         curl \
+        dos2unix \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -38,10 +39,10 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy project files
 COPY . .
 
-# Set proper permissions for startup script
-COPY startup.sh .
-RUN sed -i 's/\r$//' startup.sh && \
-    chmod +x startup.sh
+# Copy startup script and set permissions
+COPY startup.sh /app/
+RUN chmod +x /app/startup.sh && \
+    dos2unix /app/startup.sh
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
