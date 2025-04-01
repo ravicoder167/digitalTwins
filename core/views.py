@@ -5,11 +5,13 @@ from django.db.utils import OperationalError
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 from .forms import ContactForm
 import logging
 
 logger = logging.getLogger(__name__)
 
+@csrf_exempt
 def home(request):
     logger.info("Home view accessed")
     if request.method == 'POST':
@@ -26,16 +28,35 @@ def home(request):
                 # Send email
                 subject = f"New contact form submission from {name}"
                 email_message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
-                send_mail(subject, email_message, settings.DEFAULT_FROM_EMAIL, [settings.CONTACT_EMAIL])
+                logger.debug(f"Email settings: HOST={settings.EMAIL_HOST}, PORT={settings.EMAIL_PORT}, USER={settings.EMAIL_HOST_USER}")
+                logger.debug(f"Attempting to send email: Subject: {subject}, From: {settings.DEFAULT_FROM_EMAIL}, To: {settings.CONTACT_EMAIL}")
+                send_mail(
+                    subject,
+                    email_message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [settings.CONTACT_EMAIL],
+                    fail_silently=False,
+                )
                 
                 logger.info("Email sent successfully")
-                messages.success(request, "Your message has been sent successfully!")
+                
+                # Check if it's an AJAX request
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'status': 'success'})
+                else:
+                    messages.success(request, "Your message has been sent successfully!")
+                    return redirect('core:home')
+                    
             except Exception as e:
-                logger.error(f"Failed to send email: {str(e)}")
-                messages.error(request, "Failed to send email. Please try again later.")
-            
-            logger.info("Redirecting after form submission")
-            return redirect('core:home')
+                logger.error(f"Failed to send email: {str(e)}", exc_info=True)
+                logger.error(f"Email settings: DEFAULT_FROM_EMAIL: {settings.DEFAULT_FROM_EMAIL}, CONTACT_EMAIL: {settings.CONTACT_EMAIL}")
+                
+                # Check if it's an AJAX request
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+                else:
+                    messages.error(request, f"Failed to send email. Error: {str(e)}")
+                    return redirect('core:home')
         else:
             logger.warning(f"Form is invalid. Errors: {form.errors}")
             for field, errors in form.errors.items():

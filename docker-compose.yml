@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: ./startup.sh
+    volumes:
+      - .:/app
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - DEBUG=True
+      - DATABASE_URL=sqlite:///db.sqlite3
+      - PORT=8080
+      - STATIC_ROOT=/app/staticfiles
+      - STATIC_URL=/static/
+      # Email settings are now managed through environment variables

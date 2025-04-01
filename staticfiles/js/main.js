@@ -2,34 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle contact form submission
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
+        contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const formData = new FormData(this);
-            
-            try {
-                const response = await fetch('/', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
-                    }
-                });
-                
-                if (response.ok) {
-                    alert('Thank you! Your message has been sent successfully.');
-                    this.reset();
-                    window.location.href = '/#contact';
-                } else {
-                    alert('Sorry, there was an error sending your message. Please try again.');
-                }
-            } catch (error) {
-                alert('Sorry, there was an error sending your message. Please try again.');
-                console.error('Error:', error);
-            }
+            const formData = {
+                name: this.name.value,
+                email: this.email.value,
+                message: this.message.value
+            };
+
+            // For now, just show an alert. This can be connected to a backend service later
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
         });
     }
-
     // Smooth scroll for navigation links
     const navLinks = document.querySelectorAll('nav a');
     navLinks.forEach(link => {

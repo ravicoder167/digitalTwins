@@ -180,38 +180,24 @@
                         <i class="far fa-calendar-alt"></i> Schedule an Appointment
                     </a>
                 </div>
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
                 <form class="contact-form" method="post">
                     {% csrf_token %}
-                    {% if form.errors %}
-                        <div class="form-errors">
-                            {{ form.errors }}
-                        </div>
-                    {% endif %}
                     <div class="form-field">
-                        <input type="text" name="name" placeholder="Your Name" required>
+                        {{ form.name }}
                         {% if form.name.errors %}
                             <div class="field-errors">{{ form.name.errors }}</div>
                         {% endif %}
                     </div>
                     
                     <div class="form-field">
-                        <input type="email" name="email" placeholder="Your Email" required>
+                        {{ form.email }}
                         {% if form.email.errors %}
                             <div class="field-errors">{{ form.email.errors }}</div>
                         {% endif %}
                     </div>
                     
                     <div class="form-field">
-                        <textarea name="message" placeholder="Your Message" required></textarea>
+                        {{ form.message }}
                         {% if form.message.errors %}
                             <div class="field-errors">{{ form.message.errors }}</div>
                         {% endif %}
@@ -219,14 +205,6 @@
                     
                     <button type="submit" class="submit-btn">Send Message</button>
                 </form>
-                {% if debug %}
-                <div class="debug-info">
-                    <h3>Debug Information:</h3>
-                    <p>Form instance: {{ form }}</p>
-                    <p>Form errors: {{ form.errors }}</p>
-                    <p>Form data: {{ form.data }}</p>
-                </div>
-                {% endif %}
             </div>
         </section>
     </main>

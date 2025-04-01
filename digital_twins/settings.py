@@ -5,6 +5,10 @@ Django settings for digital_twins project.
 from pathlib import Path
 import os
 from django.core.management.utils import get_random_secret_key
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,9 +17,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # Temporarily set to True for troubleshooting
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']  # Temporarily allow all hosts for testing
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # Logging configuration
 LOGGING = {
@@ -172,20 +176,15 @@ if not DEBUG and not os.getenv('DOCKER_LOCAL', False):
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-# Using GitHub secrets for email credentials
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')  # Set in GitHub secrets
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')  # Set in GitHub secrets
-DEFAULT_FROM_EMAIL = 'info@cognitosparks.com'
-CONTACT_EMAIL = 'info@cognitosparks.com'
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'info@cognitosparks.com')
+CONTACT_EMAIL = os.getenv('CONTACT_EMAIL', 'info@cognitosparks.com')
 
-# For local development, you can set these in your .env file
-if DEBUG:
-    try:
-        from dotenv import load_dotenv
-        load_dotenv()
-    except ImportError:
-        pass
+print(f"DEBUG: EMAIL_HOST_USER = {EMAIL_HOST_USER}")
+print(f"DEBUG: DEFAULT_FROM_EMAIL = {DEFAULT_FROM_EMAIL}")
+print(f"DEBUG: CONTACT_EMAIL = {CONTACT_EMAIL}")

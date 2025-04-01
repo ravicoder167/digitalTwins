@@ -1,0 +1,31 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Submit Cloud Build
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          gcloud builds submit \
+            --config=cloudbuild.yaml \
+            --substitutions=_SERVICE_NAME=cognitosparks,\
+            _SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}",\
+            _DATABASE_URL="${{ secrets.DATABASE_URL }}",\
+            _EMAIL_HOST_USER="${{ secrets.EMAIL_HOST_USER }}",\
+            _EMAIL_HOST_PASSWORD="${{ secrets.EMAIL_HOST_PASSWORD }}"
