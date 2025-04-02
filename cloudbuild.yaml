@@ -28,21 +28,21 @@ steps:
       - "us-central1"
       - "--allow-unauthenticated"
       - "--set-env-vars"
-      - "SECRET_KEY=${_DJANGO_SECRET_KEY}"
+      - "SECRET_KEY=$_SECRET_KEY"
       - "--set-env-vars"
-      - "DATABASE_URL=${_DATABASE_URL}"
+      - "DATABASE_URL=$_DATABASE_URL"
       - "--set-env-vars"
       - "DEBUG=0"
       - "--set-env-vars"
       - "ALLOWED_HOSTS=${_SERVICE_NAME}.run.app"
       - "--set-env-vars"
-      - "EMAIL_HOST_USER=${_EMAIL_HOST_USER}"
+      - "EMAIL_HOST_USER=$_EMAIL_HOST_USER"
       - "--set-env-vars"
-      - "EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD}"
+      - "EMAIL_HOST_PASSWORD=$_EMAIL_HOST_PASSWORD"
       - "--set-env-vars"
-      - "DEFAULT_FROM_EMAIL=${_EMAIL_HOST_USER}"
+      - "DEFAULT_FROM_EMAIL=$_EMAIL_HOST_USER"
       - "--set-env-vars"
-      - "CONTACT_EMAIL=${_EMAIL_HOST_USER}"
+      - "CONTACT_EMAIL=$_EMAIL_HOST_USER"
       - "--memory"
       - "512Mi"
       - "--cpu"
@@ -64,11 +64,11 @@ steps:
 
 # Substitutions
 substitutions:
-  _SERVICE_NAME: cognitosparks  # Default service name
-  _DJANGO_SECRET_KEY: ""       # Set this in GitHub secrets
-  _DATABASE_URL: ""            # Set this in GitHub secrets
-  _EMAIL_HOST_USER: ""         # Set this in GitHub secrets
-  _EMAIL_HOST_PASSWORD: ""     # Set this in GitHub secrets
+  _SERVICE_NAME: cognitosparks
+  _SECRET_KEY: ""
+  _DATABASE_URL: ""
+  _EMAIL_HOST_USER: ""
+  _EMAIL_HOST_PASSWORD: ""
 
 # Configure timeout
 timeout: "1800s"
