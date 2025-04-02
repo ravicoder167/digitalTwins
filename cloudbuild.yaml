@@ -1,0 +1,34 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/cognitosparks', '.']
+
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/cognitosparks']
+
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'cognitosparks'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/cognitosparks'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars'
+      - 'DATABASE_URL=${_DATABASE_URL},SECRET_KEY=${_SECRET_KEY},EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD},EMAIL_HOST_USER=${_EMAIL_HOST_USER},ALLOWED_HOSTS=cognitosparks.com,cognitosparks.run.app,cognitosparks-473956275801.us-central1.run.app'
+
+substitutions:
+  _DATABASE_URL: ${_DATABASE_URL}
+  _SECRET_KEY: ${_SECRET_KEY}
+  _EMAIL_HOST_PASSWORD: ${_EMAIL_HOST_PASSWORD}
+  _EMAIL_HOST_USER: ${_EMAIL_HOST_USER}
+
+images:
+  - 'gcr.io/$PROJECT_ID/cognitosparks'

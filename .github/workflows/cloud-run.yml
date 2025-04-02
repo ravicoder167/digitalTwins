@@ -1,0 +1,37 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  PROJECT_ID: stoked-woods-432618-g7
+  SERVICE_NAME: cognitosparks
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+
+    - name: Authorize Docker push
+      run: gcloud auth configure-docker
+
+    - name: Build and Deploy
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+      run: |
+        gcloud builds submit \
+          --substitutions=_DATABASE_URL="$DATABASE_URL",_SECRET_KEY="$SECRET_KEY",_EMAIL_HOST_PASSWORD="$EMAIL_HOST_PASSWORD",_EMAIL_HOST_USER="$EMAIL_HOST_USER"
