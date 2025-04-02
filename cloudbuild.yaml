@@ -32,8 +32,12 @@ steps:
       - "--min-instances=0"
       - "--max-instances=10"
       - "--port=8080"
-      - "--timeout=300"
+      - "--timeout=600"
       - "--execution-environment=gen2"
+      - "--cpu-throttling"
+      - "--session-affinity"
+      - "--container-command=/app/startup.sh"
+      - "--container-concurrency=80"
 
 # Substitutions
 substitutions:
