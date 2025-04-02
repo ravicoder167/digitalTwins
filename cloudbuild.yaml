@@ -1,8 +1,10 @@
 steps:
-  # Build the container image
+  # Build the container image with verbose output
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "build"
+      - "--progress=plain"
+      - "--no-cache"
       - "-t"
       - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:$SHORT_SHA"
       - "."

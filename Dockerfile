@@ -28,9 +28,6 @@ RUN apt-get update \
 # Create necessary directories
 RUN mkdir -p /app/staticfiles /app/media
 
-# Set permissions for Cloud Run
-RUN chmod -R 755 /app
-
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
@@ -40,10 +37,10 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy project files
 COPY . .
 
-# Copy startup script and set permissions
-COPY startup.sh /app/
-RUN chmod +x /app/startup.sh && \
-    dos2unix /app/startup.sh
+# Set permissions and convert line endings
+RUN find /app -type f -name "*.sh" -exec chmod +x {} \; && \
+    find /app -type f -name "*.sh" -exec sed -i 's/\r$//' {} \; && \
+    chmod -R 755 /app
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
