@@ -21,12 +21,14 @@ steps:
       - '--platform'
       - 'managed'
       - '--allow-unauthenticated'
-      - '--set-env-vars=DATABASE_URL=${_DATABASE_URL}'
-      - '--set-env-vars=SECRET_KEY=${_SECRET_KEY}'
-      - '--set-env-vars=EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD}'
-      - '--set-env-vars=EMAIL_HOST_USER=${_EMAIL_HOST_USER}'
+      - '--set-env-vars'
+      - 'DATABASE_URL=${_DATABASE_URL},SECRET_KEY=${_SECRET_KEY},EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD},EMAIL_HOST_USER=${_EMAIL_HOST_USER}'
 
-# Substitutions are now handled in the GitHub Actions workflow
+substitutions:
+  _DATABASE_URL: ${_DATABASE_URL}
+  _SECRET_KEY: ${_SECRET_KEY}
+  _EMAIL_HOST_PASSWORD: ${_EMAIL_HOST_PASSWORD}
+  _EMAIL_HOST_USER: ${_EMAIL_HOST_USER}
 
 images:
   - 'gcr.io/$PROJECT_ID/cognitosparks'

@@ -6,6 +6,7 @@ on:
 
 env:
   PROJECT_ID: stoked-woods-432618-g7
+  SERVICE_NAME: cognitosparks
 
 jobs:
   deploy:
@@ -26,10 +27,11 @@ jobs:
       run: gcloud auth configure-docker
 
     - name: Build and Deploy
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
       run: |
         gcloud builds submit \
-          --substitutions=\
-_DATABASE_URL="${{ secrets.DATABASE_URL }}",\
-_SECRET_KEY="${{ secrets.SECRET_KEY }}",\
-_EMAIL_HOST_PASSWORD="${{ secrets.EMAIL_HOST_PASSWORD }}",\
-_EMAIL_HOST_USER="${{ secrets.EMAIL_HOST_USER }}"
+          --substitutions=_DATABASE_URL="$DATABASE_URL",_SECRET_KEY="$SECRET_KEY",_EMAIL_HOST_PASSWORD="$EMAIL_HOST_PASSWORD",_EMAIL_HOST_USER="$EMAIL_HOST_USER"
