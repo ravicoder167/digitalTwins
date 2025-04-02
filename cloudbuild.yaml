@@ -1,10 +1,8 @@
 steps:
-  # Build the container image with verbose output
+  # Build the container image
   - name: "docker"
     args:
       - "build"
-      - "--progress=plain"
-      - "--no-cache"
       - "-t"
       - "${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$_SERVICE_NAME:latest"
       - "."
@@ -29,22 +27,14 @@ steps:
       - "--set-env-vars=SECRET_KEY=${_SECRET_KEY},DATABASE_URL=${_DATABASE_URL},DEBUG=1,ALLOWED_HOSTS=${_SERVICE_NAME}.run.app,EMAIL_HOST_USER=${_EMAIL_HOST_USER},EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD},DEFAULT_FROM_EMAIL=${_EMAIL_HOST_USER},CONTACT_EMAIL=${_EMAIL_HOST_USER}"
       - "--memory=512Mi"
       - "--cpu=1"
-      - "--min-instances=0"
-      - "--max-instances=10"
       - "--port=8080"
-      - "--timeout=600"
-      - "--execution-environment=gen2"
-      - "--cpu-throttling"
-      - "--session-affinity"
-      - "--container-command=/app/startup.sh"
-      - "--container-concurrency=80"
 
 # Substitutions
 substitutions:
-  _SERVICE_NAME: cognitosparks  # Default service name
-  _SECRET_KEY: ""              # Set this in Cloud Build trigger
-  _DATABASE_URL: ""            # Set this in Cloud Build trigger
-  _REGION: "us-central1"       # Default region
+  _SERVICE_NAME: cognitosparks
+  _SECRET_KEY: ""
+  _DATABASE_URL: ""
+  _REGION: "us-central1"
 
 # Configure timeout
 timeout: "1800s"
@@ -56,8 +46,3 @@ images:
 # Only trigger builds on main branch
 options:
   logging: CLOUD_LOGGING_ONLY
-
-# Tags for the build
-tags:
-  - cognitosparks
-  - production
