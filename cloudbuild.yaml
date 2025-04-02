@@ -1,33 +1,33 @@
 steps:
   # Build the container image with verbose output
-  - name: "gcr.io/cloud-builders/docker"
+  - name: "docker"
     args:
       - "build"
       - "--progress=plain"
       - "--no-cache"
       - "-t"
-      - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest"
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$_SERVICE_NAME:latest"
       - "."
 
-  # Push the container image to Container Registry
-  - name: "gcr.io/cloud-builders/docker"
+  # Push the container image to Artifact Registry
+  - name: "docker"
     args:
       - "push"
-      - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest"
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$_SERVICE_NAME:latest"
 
   # Deploy container image to Cloud Run
-  - name: "gcr.io/google-cloud-sdk"
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
       - "run"
       - "deploy"
       - "$_SERVICE_NAME"
       - "--image"
-      - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest"
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$_SERVICE_NAME:latest"
       - "--platform"
       - "managed"
       - "--region"
-      - "us-central1"
+      - "$_REGION"
       - "--allow-unauthenticated"
       - "--set-env-vars"
       - "^##^SECRET_KEY=${_SECRET_KEY},DATABASE_URL=${_DATABASE_URL},DEBUG=1,ALLOWED_HOSTS=${_SERVICE_NAME}.run.app,EMAIL_HOST_USER=${_EMAIL_HOST_USER},EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD},DEFAULT_FROM_EMAIL=${_EMAIL_HOST_USER},CONTACT_EMAIL=${_EMAIL_HOST_USER}"
@@ -55,13 +55,14 @@ substitutions:
   _SERVICE_NAME: cognitosparks  # Default service name
   _SECRET_KEY: ""              # Set this in Cloud Build trigger
   _DATABASE_URL: ""            # Set this in Cloud Build trigger
+  _REGION: "us-central1"       # Default region
 
 # Configure timeout
 timeout: "1800s"
 
-# Images to store in Container Registry
+# Images to store in Artifact Registry
 images:
-  - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest"
+  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$_SERVICE_NAME:latest"
 
 # Only trigger builds on main branch
 options:
