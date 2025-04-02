@@ -19,7 +19,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = ['cognitosparks.com']
+
 if DEBUG:
     ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])
 
@@ -66,12 +67,6 @@ LOGGING = {
         },
     },
 }
-
-ALLOWED_HOSTS.extend([
-    f"{os.getenv('_SERVICE_NAME', 'cognitosparks')}.run.app",
-    "cognitosparks-473956275801.us-central1.run.app",
-    "cognitosparks.com"      # Add main domain
-])
 
 # Application definition
 INSTALLED_APPS = [
