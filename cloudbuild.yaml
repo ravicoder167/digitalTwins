@@ -6,14 +6,14 @@ steps:
       - "--progress=plain"
       - "--no-cache"
       - "-t"
-      - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:$SHORT_SHA"
+      - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest"
       - "."
 
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "push"
-      - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:$SHORT_SHA"
+      - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest"
 
   # Deploy container image to Cloud Run
   - name: "gcr.io/google-cloud-sdk"
@@ -23,7 +23,7 @@ steps:
       - "deploy"
       - "$_SERVICE_NAME"
       - "--image"
-      - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:$SHORT_SHA"
+      - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest"
       - "--platform"
       - "managed"
       - "--region"
@@ -61,7 +61,7 @@ timeout: "1800s"
 
 # Images to store in Container Registry
 images:
-  - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:$SHORT_SHA"
+  - "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest"
 
 # Only trigger builds on main branch
 options:
