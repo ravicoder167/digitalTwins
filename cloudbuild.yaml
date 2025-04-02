@@ -26,11 +26,7 @@ steps:
       - '--set-env-vars=EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD}'
       - '--set-env-vars=EMAIL_HOST_USER=${_EMAIL_HOST_USER}'
 
-substitutions:
-  _DATABASE_URL: ${_DATABASE_URL}
-  _SECRET_KEY: ${_SECRET_KEY}
-  _EMAIL_HOST_PASSWORD: ${_EMAIL_HOST_PASSWORD}
-  _EMAIL_HOST_USER: ${_EMAIL_HOST_USER}
+# Substitutions are now handled in the GitHub Actions workflow
 
 images:
   - 'gcr.io/$PROJECT_ID/cognitosparks'
