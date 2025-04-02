@@ -15,7 +15,6 @@ steps:
 
   # Deploy container image to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    entrypoint: gcloud
     args:
       - "run"
       - "deploy"
@@ -24,23 +23,13 @@ steps:
       - "--region=$_REGION"
       - "--platform=managed"
       - "--allow-unauthenticated"
-      - "--set-env-vars=^##^SECRET_KEY=${_SECRET_KEY},DATABASE_URL=${_DATABASE_URL},DEBUG=1,ALLOWED_HOSTS=${_SERVICE_NAME}.run.app,EMAIL_HOST_USER=${_EMAIL_HOST_USER},EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD},DEFAULT_FROM_EMAIL=${_EMAIL_HOST_USER},CONTACT_EMAIL=${_EMAIL_HOST_USER}"
-      - "--memory=512Mi"
-      - "--cpu=1"
+      - "--set-env-vars=SECRET_KEY=${_SECRET_KEY},DATABASE_URL=${_DATABASE_URL},DEBUG=1,ALLOWED_HOSTS=${_SERVICE_NAME}.run.app,EMAIL_HOST_USER=${_EMAIL_HOST_USER},EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD},DEFAULT_FROM_EMAIL=${_EMAIL_HOST_USER},CONTACT_EMAIL=${_EMAIL_HOST_USER}"
 
-# Substitutions
 substitutions:
   _SERVICE_NAME: cognitosparks
   _SECRET_KEY: ""
   _DATABASE_URL: ""
   _REGION: "us-central1"
-
-# Configure timeout
-timeout: "1800s"
-
-# Images to store in Artifact Registry
-images:
-  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/$_SERVICE_NAME"
 
 options:
   logging: CLOUD_LOGGING_ONLY
