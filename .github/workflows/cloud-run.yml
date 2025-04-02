@@ -6,7 +6,6 @@ on:
 
 env:
   PROJECT_ID: stoked-woods-432618-g7
-  SERVICE_NAME: cognitosparks
 
 jobs:
   deploy:
