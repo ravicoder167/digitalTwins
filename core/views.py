@@ -59,41 +59,20 @@ def home(request):
                         fail_silently=False,
                     )
                     logger.info("Email sent successfully")
-                except Exception as mail_error:
-                    logger.error(f"Email sending failed with error: {str(mail_error)}")
-                    logger.error("Email error details:", exc_info=True)
-                    raise  # Re-raise the exception to be caught by the outer try block
-                
-                # Check if it's an AJAX request
-                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                    return JsonResponse({'status': 'success'})
-                else:
                     messages.success(request, "Your message has been sent successfully!")
-                    return redirect('core:home')
+                except Exception as mail_error:
+                    error_msg = str(mail_error)
+                    logger.error(f"Email sending failed with error: {error_msg}")
+                    logger.error("Email error details:", exc_info=True)
+                    messages.error(request, f"Failed to send email. Please try again later. Error: {error_msg}")
+                
+                return redirect('core:home')
                     
             except Exception as e:
                 error_msg = str(e)
-                logger.error(f"Failed to send email: {error_msg}", exc_info=True)
-                logger.error(f"Email settings: DEFAULT_FROM_EMAIL: {settings.DEFAULT_FROM_EMAIL}, CONTACT_EMAIL: {settings.CONTACT_EMAIL}")
-                
-                # Check if it's an AJAX request
-                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                    error_details = {
-                        'status': 'error',
-                        'message': 'Failed to send email',
-                        'details': error_msg,
-                        'email_settings': {
-                            'host': settings.EMAIL_HOST,
-                            'port': settings.EMAIL_PORT,
-                            'use_tls': settings.EMAIL_USE_TLS,
-                            'from_email': settings.DEFAULT_FROM_EMAIL,
-                            'contact_email': settings.CONTACT_EMAIL
-                        }
-                    }
-                    return JsonResponse(error_details, status=500)
-                else:
-                    messages.error(request, f"Failed to send email. Error: {error_msg}")
-                    return redirect('core:home')
+                logger.error(f"Failed to process form: {error_msg}", exc_info=True)
+                messages.error(request, f"An error occurred while processing your message. Please try again later.")
+                return redirect('core:home')
         else:
             logger.warning(f"Form is invalid. Errors: {form.errors}")
             for field, errors in form.errors.items():

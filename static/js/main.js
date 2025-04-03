@@ -1,46 +1,41 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM fully loaded and parsed');
+    
     // Handle contact form submission
-    const contactForm = document.querySelector('.contact-form');
+    const contactForm = document.getElementById('contactForm');
+    console.log('Contact form element:', contactForm);
+    
     if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            
-            try {
-                console.log('Form submission started');
-                console.log('Form data:', Object.fromEntries(formData));
-                console.log('CSRF Token:', formData.get('csrfmiddlewaretoken'));
-
-                const response = await fetch('/', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-                
-                console.log('Response status:', response.status);
-                console.log('Response headers:', Object.fromEntries(response.headers));
-                
-                const data = await response.json();
-                console.log('Response data:', data);
-                
-                if (response.ok) {
-                    alert('Thank you! Your message has been sent successfully.');
-                    this.reset();
-                    window.location.href = '/#contact';
-                } else {
-                    const errorMessage = data.message || 'Sorry, there was an error sending your message. Please try again.';
-                    alert(errorMessage);
-                    console.error('Server Error:', data);
-                }
-            } catch (error) {
-                console.error('Network Error:', error);
-                alert('Sorry, there was a network error. Please check your connection and try again.');
-            }
+        // Log form field values when they change
+        const formFields = contactForm.querySelectorAll('input, textarea');
+        formFields.forEach(field => {
+            field.addEventListener('change', (e) => {
+                console.log(`Field ${field.name} changed:`, field.value);
+            });
         });
+
+        // Add click handler to submit button
+        const submitBtn = contactForm.querySelector('.submit-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', (e) => {
+                console.log('Submit button clicked');
+                // Log all form field values
+                const formData = new FormData(contactForm);
+                console.log('Form data before submission:', Object.fromEntries(formData));
+            });
+        }
+
+        // Log form submission
+        contactForm.addEventListener('submit', function(e) {
+            console.log('Form submission event triggered');
+            console.log('Form action:', this.action);
+            console.log('Form method:', this.method);
+            const formData = new FormData(this);
+            console.log('Final form data:', Object.fromEntries(formData));
+            // Let the form submit normally
+        });
+    } else {
+        console.error('Contact form not found in the DOM');
     }
 
     // Smooth scroll for navigation links

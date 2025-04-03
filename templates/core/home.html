@@ -180,7 +180,17 @@
                         <i class="far fa-calendar-alt"></i> Schedule an Appointment
                     </a>
                 </div>
-                <form class="contact-form" method="post">
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <form id="contactForm" class="contact-form" method="post">
                     {% csrf_token %}
                     <div class="form-field">
                         {{ form.name }}
@@ -214,7 +224,7 @@
             <div class="footer-section">
                 <h4>Contact Us</h4>
                 <p>Email: info@cognitosparks.com</p>
-                <p>Phone: (604) 318-6930</p>
+                <p>Phone: +1 (604) 318-6930</p>
             </div>
             <div class="footer-section">
                 <h4>Follow Us</h4>
