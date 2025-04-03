@@ -48,14 +48,27 @@ def home(request):
                     return redirect('core:home')
                     
             except Exception as e:
-                logger.error(f"Failed to send email: {str(e)}", exc_info=True)
+                error_msg = str(e)
+                logger.error(f"Failed to send email: {error_msg}", exc_info=True)
                 logger.error(f"Email settings: DEFAULT_FROM_EMAIL: {settings.DEFAULT_FROM_EMAIL}, CONTACT_EMAIL: {settings.CONTACT_EMAIL}")
                 
                 # Check if it's an AJAX request
                 if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                    return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+                    error_details = {
+                        'status': 'error',
+                        'message': 'Failed to send email',
+                        'details': error_msg,
+                        'email_settings': {
+                            'host': settings.EMAIL_HOST,
+                            'port': settings.EMAIL_PORT,
+                            'use_tls': settings.EMAIL_USE_TLS,
+                            'from_email': settings.DEFAULT_FROM_EMAIL,
+                            'contact_email': settings.CONTACT_EMAIL
+                        }
+                    }
+                    return JsonResponse(error_details, status=500)
                 else:
-                    messages.error(request, f"Failed to send email. Error: {str(e)}")
+                    messages.error(request, f"Failed to send email. Error: {error_msg}")
                     return redirect('core:home')
         else:
             logger.warning(f"Form is invalid. Errors: {form.errors}")

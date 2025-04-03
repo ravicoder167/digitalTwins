@@ -12,20 +12,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
                     }
                 });
+                
+                const data = await response.json();
                 
                 if (response.ok) {
                     alert('Thank you! Your message has been sent successfully.');
                     this.reset();
                     window.location.href = '/#contact';
                 } else {
-                    alert('Sorry, there was an error sending your message. Please try again.');
+                    const errorMessage = data.message || 'Sorry, there was an error sending your message. Please try again.';
+                    alert(errorMessage);
+                    console.error('Server Error:', data);
                 }
             } catch (error) {
-                alert('Sorry, there was an error sending your message. Please try again.');
-                console.error('Error:', error);
+                console.error('Network Error:', error);
+                alert('Sorry, there was a network error. Please check your connection and try again.');
             }
         });
     }
