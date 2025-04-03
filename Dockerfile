@@ -7,8 +7,9 @@ ENV PYTHONUNBUFFERED=1 \
     PORT=8080 \
     STATIC_ROOT=/app/staticfiles \
     STATIC_URL=/static/ \
-    DEBUG=1 \
-    PYTHONPATH=/app
+    DEBUG=False \
+    PYTHONPATH=/app \
+    DJANGO_SETTINGS_MODULE=digital_twins.settings
 
 # Set working directory
 WORKDIR /app
@@ -42,5 +43,17 @@ EXPOSE 8080
 # Install Gunicorn
 RUN pip install gunicorn
 
-# Start Gunicorn
-CMD gunicorn digital_twins.wsgi:application --bind 0.0.0.0:$PORT
+# Start Gunicorn with optimized settings
+CMD gunicorn digital_twins.wsgi:application --bind 0.0.0.0:$PORT \
+    --workers 2 \
+    --threads 4 \
+    --timeout 30 \
+    --keep-alive 2 \
+    --log-level info \
+    --access-logfile '-' \
+    --error-logfile '-' \
+    --capture-output \
+    --enable-stdio-inheritance \
+    --max-requests 1200 \
+    --max-requests-jitter 50 \
+    --graceful-timeout 30
