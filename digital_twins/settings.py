@@ -150,6 +150,8 @@ STATICFILES_DIRS = [
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_MAX_AGE = 0  # Disable caching during development
+WHITENOISE_USE_FINDERS = True
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
