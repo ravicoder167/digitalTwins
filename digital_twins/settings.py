@@ -19,7 +19,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['cognitosparks.com','cognitosparks-473956275801.us-central1.run.app']
+ALLOWED_HOSTS = ['cognitosparks.com', '.run.app']
 
 if DEBUG:
     ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost'])

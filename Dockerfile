@@ -39,5 +39,8 @@ RUN python manage.py collectstatic --noinput
 # Expose port
 EXPOSE 8080
 
-# Start Django development server
-CMD python manage.py runserver 0.0.0.0:$PORT
+# Install Gunicorn
+RUN pip install gunicorn
+
+# Start Gunicorn
+CMD gunicorn digital_twins.wsgi:application --bind 0.0.0.0:$PORT
