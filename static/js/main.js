@@ -6,25 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Contact form element:', contactForm);
     
     if (contactForm) {
-        // Log form field values when they change
-        const formFields = contactForm.querySelectorAll('input, textarea');
-        formFields.forEach(field => {
-            field.addEventListener('change', (e) => {
-                console.log(`Field ${field.name} changed:`, field.value);
-            });
-        });
-
-        // Add click handler to submit button
-        const submitBtn = contactForm.querySelector('.submit-btn');
-        if (submitBtn) {
-            submitBtn.addEventListener('click', (e) => {
-                console.log('Submit button clicked');
-                // Log all form field values
-                const formData = new FormData(contactForm);
-                console.log('Form data before submission:', Object.fromEntries(formData));
-            });
-        }
-
         // Log form submission
         contactForm.addEventListener('submit', function(e) {
             console.log('Form submission event triggered');
