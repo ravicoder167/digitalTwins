@@ -23,13 +23,11 @@ steps:
       - '--allow-unauthenticated'
       - '--set-env-vars'
       - >-
-        DATABASE_URL=${_DATABASE_URL},
         SECRET_KEY=${_SECRET_KEY},
         EMAIL_HOST_PASSWORD=${_EMAIL_HOST_PASSWORD},
         EMAIL_HOST_USER=${_EMAIL_HOST_USER}
 
 substitutions:
-  _DATABASE_URL: ${_DATABASE_URL}
   _SECRET_KEY: ${_SECRET_KEY}
   _EMAIL_HOST_PASSWORD: ${_EMAIL_HOST_PASSWORD}
   _EMAIL_HOST_USER: ${_EMAIL_HOST_USER}

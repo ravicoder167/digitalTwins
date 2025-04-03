@@ -43,17 +43,25 @@ EXPOSE 8080
 # Install Gunicorn
 RUN pip install gunicorn
 
-# Start Gunicorn with optimized settings
-CMD gunicorn digital_twins.wsgi:application --bind 0.0.0.0:$PORT \
+# Create startup script
+RUN echo '#!/bin/bash\n\
+echo "Environment variables:"\n\
+env | sort\n\
+echo "Starting Gunicorn..."\n\
+exec gunicorn digital_twins.wsgi:application --bind 0.0.0.0:$PORT \
     --workers 2 \
     --threads 4 \
     --timeout 30 \
     --keep-alive 2 \
-    --log-level info \
-    --access-logfile '-' \
-    --error-logfile '-' \
+    --log-level debug \
+    --access-logfile "-" \
+    --error-logfile "-" \
     --capture-output \
     --enable-stdio-inheritance \
     --max-requests 1200 \
     --max-requests-jitter 50 \
-    --graceful-timeout 30
+    --graceful-timeout 30' > /app/startup.sh && \
+    chmod +x /app/startup.sh
+
+# Start using the startup script
+CMD ["/app/startup.sh"]
