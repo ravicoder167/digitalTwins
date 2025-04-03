@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData(this);
             
             try {
+                console.log('Form submission started');
+                console.log('Form data:', Object.fromEntries(formData));
+                console.log('CSRF Token:', formData.get('csrfmiddlewaretoken'));
+
                 const response = await fetch('/', {
                     method: 'POST',
                     body: formData,
@@ -17,7 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
                 
+                console.log('Response status:', response.status);
+                console.log('Response headers:', Object.fromEntries(response.headers));
+                
                 const data = await response.json();
+                console.log('Response data:', data);
                 
                 if (response.ok) {
                     alert('Thank you! Your message has been sent successfully.');

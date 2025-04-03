@@ -25,20 +25,44 @@ def home(request):
             message = form.cleaned_data['message']
             
             try:
-                # Send email
+                # Log all form data
+                logger.info("Processing contact form submission:")
+                logger.info(f"Name: {name}")
+                logger.info(f"Email: {email}")
+                logger.info(f"Message length: {len(message)} characters")
+
+                # Log email settings before sending
+                logger.info("Email configuration:")
+                logger.info(f"EMAIL_HOST: {settings.EMAIL_HOST}")
+                logger.info(f"EMAIL_PORT: {settings.EMAIL_PORT}")
+                logger.info(f"EMAIL_USE_TLS: {settings.EMAIL_USE_TLS}")
+                logger.info(f"EMAIL_HOST_USER: {settings.EMAIL_HOST_USER}")
+                logger.info(f"DEFAULT_FROM_EMAIL: {settings.DEFAULT_FROM_EMAIL}")
+                logger.info(f"CONTACT_EMAIL: {settings.CONTACT_EMAIL}")
+
+                # Prepare email
                 subject = f"New contact form submission from {name}"
                 email_message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
-                logger.debug(f"Email settings: HOST={settings.EMAIL_HOST}, PORT={settings.EMAIL_PORT}, USER={settings.EMAIL_HOST_USER}")
-                logger.debug(f"Attempting to send email: Subject: {subject}, From: {settings.DEFAULT_FROM_EMAIL}, To: {settings.CONTACT_EMAIL}")
-                send_mail(
-                    subject,
-                    email_message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [settings.CONTACT_EMAIL],
-                    fail_silently=False,
-                )
                 
-                logger.info("Email sent successfully")
+                logger.info("Attempting to send email...")
+                logger.info(f"Subject: {subject}")
+                logger.info(f"From: {settings.DEFAULT_FROM_EMAIL}")
+                logger.info(f"To: {settings.CONTACT_EMAIL}")
+
+                # Send email with detailed logging
+                try:
+                    send_mail(
+                        subject,
+                        email_message,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [settings.CONTACT_EMAIL],
+                        fail_silently=False,
+                    )
+                    logger.info("Email sent successfully")
+                except Exception as mail_error:
+                    logger.error(f"Email sending failed with error: {str(mail_error)}")
+                    logger.error("Email error details:", exc_info=True)
+                    raise  # Re-raise the exception to be caught by the outer try block
                 
                 # Check if it's an AJAX request
                 if request.headers.get('X-Requested-With') == 'XMLHttpRequest':

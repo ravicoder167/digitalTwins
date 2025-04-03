@@ -32,5 +32,11 @@ jobs:
         EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
         EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
       run: |
+        echo "Deploying with email configuration:"
+        echo "EMAIL_HOST_USER: $EMAIL_HOST_USER"
+        echo "DEFAULT_FROM_EMAIL: info@cognitosparks.com"
+        echo "CONTACT_EMAIL: info@cognitosparks.com"
+        
         gcloud builds submit \
-          --substitutions=_SECRET_KEY="$SECRET_KEY",_EMAIL_HOST_PASSWORD="$EMAIL_HOST_PASSWORD",_EMAIL_HOST_USER="$EMAIL_HOST_USER"
+          --substitutions=_SECRET_KEY="$SECRET_KEY",_EMAIL_HOST_PASSWORD="$EMAIL_HOST_PASSWORD",_EMAIL_HOST_USER="$EMAIL_HOST_USER" \
+          --verbosity=debug
