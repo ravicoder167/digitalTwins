@@ -23,20 +23,10 @@ steps:
       - '--allow-unauthenticated'
       - '--set-env-vars'
       - >-
-        SECRET_KEY=${_SECRET_KEY},
-        MS_TENANT_ID=${_MS_TENANT_ID},
-        MS_CLIENT_ID=${_MS_CLIENT_ID},
-        MS_CLIENT_SECRET=${_MS_CLIENT_SECRET},
-        MS_LICENSED_USER=${_MS_LICENSED_USER},
         STATIC_VERSION=${_STATIC_VERSION},
         DEBUG=False
 
 substitutions:
-  _SECRET_KEY: ''
-  _MS_TENANT_ID: ''
-  _MS_CLIENT_ID: ''
-  _MS_CLIENT_SECRET: ''
-  _MS_LICENSED_USER: ''
   _STATIC_VERSION: ''
 
 images:
