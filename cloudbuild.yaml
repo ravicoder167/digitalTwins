@@ -32,12 +32,12 @@ steps:
         DEBUG=False
 
 substitutions:
-  _SECRET_KEY: ${_SECRET_KEY}
-  _MS_TENANT_ID: ${_MS_TENANT_ID}
-  _MS_CLIENT_ID: ${_MS_CLIENT_ID}
-  _MS_CLIENT_SECRET: ${_MS_CLIENT_SECRET}
-  _MS_LICENSED_USER: ${_MS_LICENSED_USER}
-  _STATIC_VERSION: '1'
+  _SECRET_KEY: ''
+  _MS_TENANT_ID: ''
+  _MS_CLIENT_ID: ''
+  _MS_CLIENT_SECRET: ''
+  _MS_LICENSED_USER: ''
+  _STATIC_VERSION: ''
 
 images:
   - 'gcr.io/$PROJECT_ID/cognitosparks'
