@@ -26,6 +26,11 @@ jobs:
     - name: Authorize Docker push
       run: gcloud auth configure-docker
 
+    - name: Get Current Static Version
+      id: get_version
+      run: |
+        echo "STATIC_VERSION=$(date +%s)" >> $GITHUB_ENV
+
     - name: Build and Deploy
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -34,8 +39,13 @@ jobs:
         MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
         MS_LICENSED_USER: ${{ secrets.MS_LICENSED_USER }}
       run: |
-        echo "Deploying with Microsoft Graph API configuration"
+        echo "Deploying with Microsoft Graph API configuration and Static Version: $STATIC_VERSION"
         
         gcloud builds submit \
-          --substitutions=_SECRET_KEY="$SECRET_KEY",_MS_TENANT_ID="$MS_TENANT_ID",_MS_CLIENT_ID="$MS_CLIENT_ID",_MS_CLIENT_SECRET="$MS_CLIENT_SECRET",_MS_LICENSED_USER="$MS_LICENSED_USER" \
+          --substitutions=_SECRET_KEY="$SECRET_KEY",\
+          _MS_TENANT_ID="$MS_TENANT_ID",\
+          _MS_CLIENT_ID="$MS_CLIENT_ID",\
+          _MS_CLIENT_SECRET="$MS_CLIENT_SECRET",\
+          _MS_LICENSED_USER="$MS_LICENSED_USER",\
+          _STATIC_VERSION="$STATIC_VERSION" \
           --verbosity=debug

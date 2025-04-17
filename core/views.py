@@ -116,7 +116,7 @@ def home(request):
                     send_outlook_email(
                         subject=subject,
                         body=email_message,
-                        cc_recipients=[email],  # Use the user's email as CC
+                       # cc_recipients=[email],  # Use the user's email as CC
                         bcc_recipients=['info@cognitosparks.com']  # Add BCC recipient from HTML
                     )
                     

@@ -28,6 +28,7 @@ steps:
         MS_CLIENT_ID=${_MS_CLIENT_ID},
         MS_CLIENT_SECRET=${_MS_CLIENT_SECRET},
         MS_LICENSED_USER=${_MS_LICENSED_USER},
+        STATIC_VERSION=${_STATIC_VERSION},
         DEBUG=False
 
 substitutions:
@@ -36,6 +37,17 @@ substitutions:
   _MS_CLIENT_ID: ${_MS_CLIENT_ID}
   _MS_CLIENT_SECRET: ${_MS_CLIENT_SECRET}
   _MS_LICENSED_USER: ${_MS_LICENSED_USER}
+  _STATIC_VERSION: '1'
+
+# Update STATIC_VERSION
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    echo "Updating STATIC_VERSION"
+    NEW_VERSION=$((${_STATIC_VERSION} + 1))
+    gcloud builds submit --substitutions=_STATIC_VERSION=$NEW_VERSION
 
 images:
   - 'gcr.io/$PROJECT_ID/cognitosparks'
