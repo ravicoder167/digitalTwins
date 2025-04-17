@@ -39,15 +39,9 @@ substitutions:
   _MS_LICENSED_USER: ${_MS_LICENSED_USER}
   _STATIC_VERSION: '1'
 
-# Update STATIC_VERSION
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'bash'
-  args:
-  - '-c'
-  - |
-    echo "Updating STATIC_VERSION"
-    NEW_VERSION=$((${_STATIC_VERSION} + 1))
-    gcloud builds submit --substitutions=_STATIC_VERSION=$NEW_VERSION
-
 images:
   - 'gcr.io/$PROJECT_ID/cognitosparks'
+
+options:
+  env:
+    - 'STATIC_VERSION=${_STATIC_VERSION}'

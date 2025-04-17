@@ -34,8 +34,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
-# Collect static files
-RUN python manage.py collectstatic --noinput --clear
+# Collect static files with version
+RUN STATIC_VERSION=${STATIC_VERSION:-1} python manage.py collectstatic --noinput --clear
 
 # Expose port
 EXPOSE 8080
