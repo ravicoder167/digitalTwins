@@ -37,9 +37,5 @@ jobs:
         echo "Deploying with Microsoft Graph API configuration"
         
         gcloud builds submit \
-          --substitutions=_SECRET_KEY="$SECRET_KEY",\
-          _MS_TENANT_ID="$MS_TENANT_ID",\
-          _MS_CLIENT_ID="$MS_CLIENT_ID",\
-          _MS_CLIENT_SECRET="$MS_CLIENT_SECRET",\
-          _MS_LICENSED_USER="$MS_LICENSED_USER" \
+          --substitutions=_SECRET_KEY="$SECRET_KEY",_MS_TENANT_ID="$MS_TENANT_ID",_MS_CLIENT_ID="$MS_CLIENT_ID",_MS_CLIENT_SECRET="$MS_CLIENT_SECRET",_MS_LICENSED_USER="$MS_LICENSED_USER" \
           --verbosity=debug
