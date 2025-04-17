@@ -150,7 +150,7 @@ STATICFILES_DIRS = [
 ]
 
 # Static files version for cache busting
-STATIC_VERSION = '2'
+STATIC_VERSION = os.getenv('STATIC_VERSION', '1')
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'

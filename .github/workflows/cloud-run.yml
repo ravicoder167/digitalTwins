@@ -35,7 +35,7 @@ jobs:
       run: |
         echo "Deploying with Static Version: $STATIC_VERSION"
         gcloud builds submit \
-          --substitutions="_STATIC_VERSION=$STATIC_VERSION" \
+          --substitutions="_STATIC_VERSION=$STATIC_VERSION,_MS_TENANT_ID=${{ secrets.MS_TENANT_ID }},_MS_CLIENT_ID=${{ secrets.MS_CLIENT_ID }},_MS_CLIENT_SECRET=${{ secrets.MS_CLIENT_SECRET }},_MS_LICENSED_USER=${{ secrets.MS_LICENSED_USER }}" \
           --verbosity=debug
 
     - name: Display build logs

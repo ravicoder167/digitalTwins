@@ -24,10 +24,18 @@ steps:
       - '--set-env-vars'
       - >-
         STATIC_VERSION=${_STATIC_VERSION},
-        DEBUG=False
+        DEBUG=False,
+        MS_TENANT_ID=${_MS_TENANT_ID},
+        MS_CLIENT_ID=${_MS_CLIENT_ID},
+        MS_CLIENT_SECRET=${_MS_CLIENT_SECRET},
+        MS_LICENSED_USER=${_MS_LICENSED_USER}
 
 substitutions:
   _STATIC_VERSION: ''
+  _MS_TENANT_ID: ''
+  _MS_CLIENT_ID: ''
+  _MS_CLIENT_SECRET: ''
+  _MS_LICENSED_USER: ''
 
 images:
   - 'gcr.io/$PROJECT_ID/cognitosparks'

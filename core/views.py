@@ -25,7 +25,11 @@ def send_outlook_email(subject, body, cc_recipients=None, bcc_recipients=None):
         licensed_user = os.environ.get('MS_LICENSED_USER')
         from_email = 'noreply@cognitosparks.com'
 
+        logger.info(f"Attempting to send email with subject: {subject}")
+        logger.debug(f"Email recipients - CC: {cc_recipients}, BCC: {bcc_recipients}")
+
         if not all([tenant_id, client_id, client_secret, licensed_user]):
+            logger.error("Missing required Microsoft Graph API credentials")
             raise ValueError("Missing required Microsoft Graph API credentials")
 
         # Get access token
@@ -37,12 +41,16 @@ def send_outlook_email(subject, body, cc_recipients=None, bcc_recipients=None):
             "scope": "https://graph.microsoft.com/.default"
         }
 
+        logger.debug("Requesting access token")
         token_response = requests.post(token_url, data=token_data)
         token_response.raise_for_status()
         access_token = token_response.json().get("access_token")
 
         if not access_token:
+            logger.error("Failed to retrieve access token")
             raise ValueError("Failed to retrieve access token")
+
+        logger.debug("Access token retrieved successfully")
 
         # Prepare email message
         email_message = {
@@ -74,13 +82,20 @@ def send_outlook_email(subject, body, cc_recipients=None, bcc_recipients=None):
             "Content-Type": "application/json"
         }
 
+        logger.debug("Sending email request to Microsoft Graph API")
         send_response = requests.post(send_email_url, headers=headers, json=email_message)
         send_response.raise_for_status()
         logger.info(f"Email sent successfully")
         return True
 
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Network error when sending email: {str(e)}", exc_info=True)
+        raise
+    except ValueError as e:
+        logger.error(f"Value error when sending email: {str(e)}", exc_info=True)
+        raise
     except Exception as e:
-        logger.error(f"Failed to send email via Outlook: {str(e)}", exc_info=True)
+        logger.error(f"Unexpected error when sending email: {str(e)}", exc_info=True)
         raise
 
 @csrf_exempt
