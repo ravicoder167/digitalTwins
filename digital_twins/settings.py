@@ -178,11 +178,8 @@ EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.Email
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'info@cognitosparks.com')
-CONTACT_EMAIL = os.getenv('CONTACT_EMAIL', 'info@cognitosparks.com')
-
-print(f"DEBUG: EMAIL_HOST_USER = {EMAIL_HOST_USER}")
-print(f"DEBUG: DEFAULT_FROM_EMAIL = {DEFAULT_FROM_EMAIL}")
-print(f"DEBUG: CONTACT_EMAIL = {CONTACT_EMAIL}")
+# Microsoft Graph API settings
+MS_TENANT_ID = os.getenv('MS_TENANT_ID')
+MS_CLIENT_ID = os.getenv('MS_CLIENT_ID')
+MS_CLIENT_SECRET = os.getenv('MS_CLIENT_SECRET')
+MS_LICENSED_USER = os.getenv('MS_LICENSED_USER')

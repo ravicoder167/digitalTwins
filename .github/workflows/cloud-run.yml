@@ -29,14 +29,17 @@ jobs:
     - name: Build and Deploy
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+        MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
+        MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+        MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
+        MS_LICENSED_USER: ${{ secrets.MS_LICENSED_USER }}
       run: |
-        echo "Deploying with email configuration:"
-        echo "EMAIL_HOST_USER: $EMAIL_HOST_USER"
-        echo "DEFAULT_FROM_EMAIL: info@cognitosparks.com"
-        echo "CONTACT_EMAIL: info@cognitosparks.com"
+        echo "Deploying with Microsoft Graph API configuration"
         
         gcloud builds submit \
-          --substitutions=_SECRET_KEY="$SECRET_KEY",_EMAIL_HOST_PASSWORD="$EMAIL_HOST_PASSWORD",_EMAIL_HOST_USER="$EMAIL_HOST_USER" \
+          --substitutions=_SECRET_KEY="$SECRET_KEY",\
+          _MS_TENANT_ID="$MS_TENANT_ID",\
+          _MS_CLIENT_ID="$MS_CLIENT_ID",\
+          _MS_CLIENT_SECRET="$MS_CLIENT_SECRET",\
+          _MS_LICENSED_USER="$MS_LICENSED_USER" \
           --verbosity=debug
