@@ -180,6 +180,9 @@
                         <i class="far fa-calendar-alt"></i> Schedule an Appointment
                     </a>
                 </div>
+                <!-- Messages and Dialog Container -->
+                <div id="messages" style="display: none;" data-messages="{% for message in messages %}{{ message|escapejs }}{% if not forloop.last %}||{% endif %}{% endfor %}"></div>
+                
                 <!-- Custom Dialog -->
                 <div id="customDialog" class="custom-dialog">
                     <div class="dialog-content">
@@ -187,20 +190,6 @@
                         <button onclick="closeDialog()">Close</button>
                     </div>
                 </div>
-
-                <div id="messages" style="display: none;" data-messages="{% for message in messages %}{{ message|escapejs }}{% if not forloop.last %}||{% endif %}{% endfor %}"></div>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var messagesElement = document.getElementById('messages');
-                        var messagesData = messagesElement.getAttribute('data-messages');
-                        if (messagesData) {
-                            var messages = messagesData.split('||');
-                            messages.forEach(function(message) {
-                                showDialog(message);
-                            });
-                        }
-                    });
-                </script>
                 
                 <form id="contactForm" class="contact-form" method="post" action="{% url 'core:home' %}">
                     {% csrf_token %}
@@ -236,10 +225,19 @@
             <div class="footer-section">
                 <h4>Follow Us</h4>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
                 </div>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: info@cognitosparks.com</p>
+                <p>Phone: +1 (604) 318-6930</p>
+            </div>
+            <div class="footer-section">
+                <h4>Address</h4>
+                <p>123 Tech Street, Vancouver, BC, Canada</p>
             </div>
         </div>
         <div class="footer-bottom">
